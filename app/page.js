@@ -18,7 +18,14 @@ export default function Home() {
   };
 
   const sendMessage = async () => {
-    const response = await fetch('http://localhost:8000/chat/echo/', {
+    // First, add the user's message to the UI
+    setMessages([...messages, { content: input, type: 'user' }]);
+
+    // Clear the input field
+    setInput('');
+
+    // Then, send the message to the server and wait for the bot's reply
+    const response = await fetch('http://localhost:8000/chat/openai/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,9 +34,11 @@ export default function Home() {
     });
     const data = await response.json();
 
+    // Finally, add the bot's reply to the UI
     setMessages([...messages, { content: input, type: 'user' }, { content: data.content, type: 'bot' }]);
-    setInput('');
+
   };
+
 
   return (
     <div className="flex flex-col h-screen items-center justify-between">
