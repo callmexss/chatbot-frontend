@@ -18,27 +18,51 @@ export default function Home() {
   };
 
   const sendMessage = async () => {
-    // First, add the user's message to the UI
-    setMessages([...messages, { content: input, type: 'user' }]);
+      // First, add the user's message to the UI
+      setMessages([...messages, { content: input, type: 'user' }]);
 
-    // Clear the input field
-    setInput('');
+      // Clear the input field
+      setInput('');
 
-    // Then, send the message to the server and wait for the bot's reply
-    const response = await fetch('http://localhost:8000/chat/openai/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ content: input }),
-    });
-    const data = await response.json();
+      // Then, send the message to the server and wait for the bot's reply
+      const controller = new AbortController();
+      const signal = controller.signal;
 
-    // Finally, add the bot's reply to the UI
-    setMessages([...messages, { content: input, type: 'user' }, { content: data.content, type: 'bot' }]);
+      try {
+        const response = await fetch('http://localhost:8000/chat/openai/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ content: input }),
+          signal,
+        });
+
+        // Create a variable to hold the bot's reply
+        let botReply = '';
+
+        // Read the response stream incrementally
+        const reader = response.body.getReader();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          
+          // Convert ArrayBuffer to string and add it to botReply
+          const chunk = new TextDecoder().decode(value);
+          botReply += chunk;
+          console.log(botReply);
+
+          // Update the UI with the current state of botReply
+          setMessages([...messages, { content: input, type: 'user' }, { content: botReply, type: 'bot' }]);
+        }
+
+        // Once done, you might want to finalize the bot's reply in the state
+        // setMessages([...messages, { content: botReply, type: 'bot' }]);
+      } catch (error) {
+        console.error('Fetch failed:', error);
+      }
 
   };
-
 
   return (
     <div className="flex flex-col h-screen items-center justify-between">
