@@ -32,8 +32,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto p-4">
+    <div className="flex flex-col h-screen items-center justify-between">
+      <div className="w-full max-w-2xl flex-1 overflow-y-auto p-4">
         {messages.map((message, index) => (
           <div key={index} className={`mb-4 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
             <span className={message.type === 'user' ? 'bg-blue-300 text-white p-2 rounded' : 'bg-gray-300 p-2 rounded'}>
@@ -42,7 +42,7 @@ export default function Home() {
           </div>
         ))}
       </div>
-      <div className="border-t p-4">
+      <div className="border-t w-full max-w-2xl p-4">
         <textarea
           className="w-full p-2 rounded border"
           rows="3"
