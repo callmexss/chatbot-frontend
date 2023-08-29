@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from 'react';
+import ToolBar from './Components/ToolBar';
+import ChatBox from './Components/ChatBox';
+import InputBox  from './Components/InputBox';
 
 export default function Home() {
   const [input, setInput] = useState('');
@@ -44,47 +47,15 @@ export default function Home() {
     }
   };
 
-return (
-  <div className="flex h-screen">
-    <div className="flex flex-col w-1/6 p-4 border-r">
-      <h2>Tool Bar</h2>
-      <div className="mt-4">
-        <label htmlFor="system-prompt">System Prompt:</label>
-        <input 
-          id="system-prompt" 
-          type="text" 
-          className="w-full p-2 border rounded"
-          value={systemPrompt}
-          onChange={(e) => setSystemPrompt(e.target.value)}
-        />
+  return (
+    <div className="flex h-screen">
+      <ToolBar systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} />
+      <div className="flex flex-col w-4/6 h-full items-center justify-between">
+        <ChatBox messages={messages} />
+        <InputBox input={input} setInput={setInput} sendMessage={sendMessage} handleKeyDown={handleKeyDown} />
       </div>
+      <div className="w-1/6"></div>
     </div>
-    <div className="flex flex-col w-4/6 h-full items-center justify-between">
-      <div className="w-full flex-1 overflow-y-auto p-4">
-        {messages.map((message, index) => (
-          <div key={index} className={`mb-4 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
-            <span className={message.type === 'user' ? 'bg-blue-300 text-white p-2 rounded' : 'bg-gray-300 p-2 rounded'}>
-              {message.content}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="border-t w-full p-4">
-        <textarea
-          className="w-full p-2 rounded border"
-          rows="3"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button onClick={sendMessage} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
-          Send
-        </button>
-      </div>
-    </div>
-    <div className="w-1/6">
-    </div>
-  </div>
-);
+  );
 
 }
