@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function Home() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
+  const [systemPrompt, setSystemPrompt] = useState('');
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -18,55 +19,48 @@ export default function Home() {
   };
 
   const sendMessage = async () => {
-      // First, add the user's message to the UI
-      setMessages([...messages, { content: input, type: 'user' }]);
+    setMessages([...messages, { content: input, type: 'user' }]);
+    setInput('');
 
-      // Clear the input field
-      setInput('');
+    const response = await fetch('http://localhost:8000/chat/openai/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: input,
+        system_prompt: systemPrompt 
+      }),
+    });
 
-      // Then, send the message to the server and wait for the bot's reply
-      const controller = new AbortController();
-      const signal = controller.signal;
-
-      try {
-        const response = await fetch('http://localhost:8000/chat/openai/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ content: input }),
-          signal,
-        });
-
-        // Create a variable to hold the bot's reply
-        let botReply = '';
-
-        // Read the response stream incrementally
-        const reader = response.body.getReader();
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          
-          // Convert ArrayBuffer to string and add it to botReply
-          const chunk = new TextDecoder().decode(value);
-          botReply += chunk;
-          console.log(botReply);
-
-          // Update the UI with the current state of botReply
-          setMessages([...messages, { content: input, type: 'user' }, { content: botReply, type: 'bot' }]);
-        }
-
-        // Once done, you might want to finalize the bot's reply in the state
-        // setMessages([...messages, { content: botReply, type: 'bot' }]);
-      } catch (error) {
-        console.error('Fetch failed:', error);
-      }
-
+    let botReply = '';
+    const reader = response.body.getReader();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = new TextDecoder().decode(value);
+      botReply += chunk;
+      setMessages([...messages, { content: input, type: 'user' }, { content: botReply, type: 'bot' }]);
+    }
   };
 
-  return (
-    <div className="flex flex-col h-screen items-center justify-between">
-      <div className="w-full max-w-2xl flex-1 overflow-y-auto p-4">
+return (
+  <div className="flex h-screen">
+    <div className="flex flex-col w-1/6 p-4 border-r">
+      <h2>Tool Bar</h2>
+      <div className="mt-4">
+        <label htmlFor="system-prompt">System Prompt:</label>
+        <input 
+          id="system-prompt" 
+          type="text" 
+          className="w-full p-2 border rounded"
+          value={systemPrompt}
+          onChange={(e) => setSystemPrompt(e.target.value)}
+        />
+      </div>
+    </div>
+    <div className="flex flex-col w-4/6 h-full items-center justify-between">
+      <div className="w-full flex-1 overflow-y-auto p-4">
         {messages.map((message, index) => (
           <div key={index} className={`mb-4 ${message.type === 'user' ? 'text-right' : 'text-left'}`}>
             <span className={message.type === 'user' ? 'bg-blue-300 text-white p-2 rounded' : 'bg-gray-300 p-2 rounded'}>
@@ -75,7 +69,7 @@ export default function Home() {
           </div>
         ))}
       </div>
-      <div className="border-t w-full max-w-2xl p-4">
+      <div className="border-t w-full p-4">
         <textarea
           className="w-full p-2 rounded border"
           rows="3"
@@ -88,5 +82,9 @@ export default function Home() {
         </button>
       </div>
     </div>
-  );
+    <div className="w-1/6">
+    </div>
+  </div>
+);
+
 }
