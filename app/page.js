@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   const sendMessage = async () => {
-    setMessages([...messages, { content: input, type: 'user' }]);
+    setMessages([...messages, { content: input, message_type: 'user' }]);
     setInput('');
 
     const response = await fetch('http://localhost:8000/chat/openai/', {
@@ -45,7 +45,7 @@ export default function Home() {
       if (done) break;
       const chunk = new TextDecoder().decode(value);
       botReply += chunk;
-      setMessages([...messages, { content: input, type: 'user' }, { content: botReply, type: 'bot' }]);
+      setMessages([...messages, { content: input, message_type: 'user' }, { content: botReply, message_type: 'bot' }]);
     }
   };
 
