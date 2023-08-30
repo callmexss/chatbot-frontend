@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const ConversationManager = ({ setCurrentConversationId, setMessages }) => {
+const ConversationManager = ({ 
+    setCurrentConversationId,
+     setMessages,
+     handleConversationSelected
+}) => {
   const [conversations, setConversations] = useState([]);
   const [newConversationName, setNewConversationName] = useState('');
   const [localCurrentConversationId, setLocalCurrentConversationId] = useState(null);
@@ -25,6 +29,7 @@ const ConversationManager = ({ setCurrentConversationId, setMessages }) => {
       setConversations([...conversations, data]);
       setNewConversationName('');
     });
+    handleConversationSelected();
   };
 
   const deleteConversation = (id) => {
@@ -40,6 +45,7 @@ const ConversationManager = ({ setCurrentConversationId, setMessages }) => {
   const selectConversation = (id) => {
     setLocalCurrentConversationId(id);
     setCurrentConversationId(id);
+    handleConversationSelected();
   };
 
   return (

@@ -10,6 +10,11 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [systemPrompt, setSystemPrompt] = useState('');
   const [currentConversationId, setCurrentConversationId] = useState(null);
+  const [isConversationSelected, setIsConversationSelected] = useState(false);
+
+  const handleConversationSelected = () => {
+    setIsConversationSelected(true);
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -64,10 +69,14 @@ export default function Home() {
         systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} 
         currentConversationId={currentConversationId} setCurrentConversationId={setCurrentConversationId}
         setMessages={setMessages}
+        handleConversationSelected={handleConversationSelected}
       />
       <div className="flex flex-col w-4/6 h-full items-center justify-between">
         <ChatBox messages={messages} />
-        <InputBox input={input} setInput={setInput} sendMessage={sendMessage} handleKeyDown={handleKeyDown} />
+        <InputBox
+          input={input} setInput={setInput} sendMessage={sendMessage} handleKeyDown={handleKeyDown}
+          disabled={!isConversationSelected} 
+        />
       </div>
       <div className="w-1/6"></div>
     </div>

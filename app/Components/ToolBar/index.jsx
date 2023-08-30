@@ -4,7 +4,8 @@ import ConversationManager from './ConversationManager';
 export const ToolBar = ({
   setSystemPrompt,
   setCurrentConversationId,
-  setMessages
+  setMessages,
+  handleConversationSelected
 }) => {
   return (
     <div className="flex flex-col w-1/6 p-4 border-r">
@@ -13,6 +14,7 @@ export const ToolBar = ({
       <ConversationManager 
         setCurrentConversationId={setCurrentConversationId} 
         setMessages={setMessages} 
+        handleConversationSelected={handleConversationSelected}
       />
     </div>
   );
