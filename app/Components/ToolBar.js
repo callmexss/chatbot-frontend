@@ -43,23 +43,6 @@ export const ToolBar = ({ setSystemPrompt }) => {
       .then((data) => setPrompts(data));
   }, []);
 
-  const addPrompt = () => {
-    // Add the new prompt to the backend
-    fetch('http://localhost:8000/chat/system-prompts/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPrompt),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      // Update the UI
-      setPrompts([...prompts, data]);
-      setNewPrompt({ name: '', content: '' });
-    });
-  };
-
   const editPrompt = (prompt) => {
     setIsEditing(true);
     setEditablePrompt(prompt);
@@ -75,8 +58,15 @@ export const ToolBar = ({ setSystemPrompt }) => {
   };
 
   const usePrompt = (id, content) => {
-    setSystemPrompt(content);
-    setCurrentPromptId(id);
+    if (id === currentPromptId) {
+      // Cancel use
+      setSystemPrompt('');
+      setCurrentPromptId(null);
+    } else {
+      // Use new
+      setSystemPrompt(content);
+      setCurrentPromptId(id);
+    }
   };
 
   return (
@@ -91,7 +81,9 @@ export const ToolBar = ({ setSystemPrompt }) => {
               </span>
             </div>
             <div className="flex space-x-2">
-              <button className="text-green-500 hover:text-green-700" onClick={() => usePrompt(prompt.id, prompt.content)}>
+              <button 
+                className={`text-green-500 hover:text-green-700 ${currentPromptId === prompt.id ? 'text-green-900' : ''}`}
+                onClick={() => usePrompt(prompt.id, prompt.content)}>
                 Use
               </button>
               <button className="text-blue-500 hover:text-blue-700" onClick={() => editPrompt(prompt)}>
