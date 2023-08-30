@@ -9,6 +9,7 @@ export default function Home() {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [systemPrompt, setSystemPrompt] = useState('');
+  const [currentConversationId, setCurrentConversationId] = useState(null);
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -32,7 +33,8 @@ export default function Home() {
       },
       body: JSON.stringify({
         content: input,
-        system_prompt: systemPrompt 
+        system_prompt: systemPrompt,
+        conversation_id: currentConversationId
       }),
     });
 
@@ -49,7 +51,10 @@ export default function Home() {
 
   return (
     <div className="flex h-screen">
-      <ToolBar systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} />
+      <ToolBar
+        systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} 
+        currentConversationId={currentConversationId} setCurrentConversationId={setCurrentConversationId}
+      />
       <div className="flex flex-col w-4/6 h-full items-center justify-between">
         <ChatBox messages={messages} />
         <InputBox input={input} setInput={setInput} sendMessage={sendMessage} handleKeyDown={handleKeyDown} />
