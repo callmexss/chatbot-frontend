@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ToolBar from './Components/ToolBar';
 import ChatBox from './Components/ChatBox';
 import InputBox  from './Components/InputBox';
@@ -48,6 +48,15 @@ export default function Home() {
       setMessages([...messages, { content: input, type: 'user' }, { content: botReply, type: 'bot' }]);
     }
   };
+
+  useEffect(() => {
+    if (currentConversationId) {
+      // Fetch messages for the current conversation
+      fetch(`http://localhost:8000/chat/conversations/${currentConversationId}/messages/`)
+        .then((response) => response.json())
+        .then((data) => setMessages(data));
+    }
+  }, [currentConversationId]);
 
   return (
     <div className="flex h-screen">
