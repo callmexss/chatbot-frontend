@@ -3,10 +3,38 @@ import { useState, useEffect } from 'react';
 export const ToolBar = ({ setSystemPrompt }) => {
   const [prompts, setPrompts] = useState([]);
   const [newPrompt, setNewPrompt] = useState({ name: '', content: '' });
-  const [editablePrompt, setEditablePrompt] = useState(null);
+  const [editablePrompt, setEditablePrompt] = useState({ name: '', content: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [currentPromptId, setCurrentPromptId] = useState(null);
 
+  const addOrUpdatePrompt = () => {
+    const apiUrl = editablePrompt.id
+      ? `http://localhost:8000/chat/system-prompts/${editablePrompt.id}/`
+      : 'http://localhost:8000/chat/system-prompts/';
+
+    const method = editablePrompt.id ? 'PUT' : 'POST';
+
+    fetch(apiUrl, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editablePrompt),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (editablePrompt.id) {
+        // Update the existing prompt in the UI
+        setPrompts(prompts.map((p) => (p.id === editablePrompt.id ? data : p)));
+      } else {
+        // Add the new prompt to the UI
+        setPrompts([...prompts, data]);
+      }
+      // Reset the editable prompt
+      setEditablePrompt({ name: '', content: '' });
+      setIsEditing(false);
+    });
+  };
 
   useEffect(() => {
     // Fetch the system prompts from the backend
@@ -76,24 +104,33 @@ export const ToolBar = ({ setSystemPrompt }) => {
           </div>
         ))}
       </div>
+
       <div className="mt-4">
         <input 
           type="text" 
-          placeholder="New Prompt Name" 
+          placeholder="Prompt Name" 
           className="w-full p-2 border rounded mb-2"
-          value={newPrompt.name}
-          onChange={(e) => setNewPrompt({ ...newPrompt, name: e.target.value })}
+          value={editablePrompt.name}
+          onChange={(e) => setEditablePrompt({ ...editablePrompt, name: e.target.value })}
         />
         <textarea
-          placeholder="New Prompt Content"
+          placeholder="Prompt Content"
           className="w-full p-2 rounded border mb-2"
           rows="3"
-          value={newPrompt.content}
-          onChange={(e) => setNewPrompt({ ...newPrompt, content: e.target.value })}
+          value={editablePrompt.content}
+          onChange={(e) => setEditablePrompt({ ...editablePrompt, content: e.target.value })}
         />
-        <button onClick={addPrompt} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
-          Add
+        <button onClick={addOrUpdatePrompt} className="bg-blue-500 text-white px-4 py-2 rounded mt-2">
+          {isEditing ? 'Update' : 'Add'}
         </button>
+        {isEditing && (
+          <button onClick={() => {
+            setIsEditing(false)
+            setEditablePrompt({ name: '', content: '' })
+          }} className="bg-gray-500 text-white px-4 py-2 rounded mt-2 ml-2">
+            Cancel
+          </button>
+        )}
       </div>
     </div>
   );
