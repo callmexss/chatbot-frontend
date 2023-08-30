@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export const ToolBar = ({ setSystemPrompt }) => {
+export const SystemPromptManager = ({ setSystemPrompt }) => {
   const [prompts, setPrompts] = useState([]);
-  const [newPrompt, setNewPrompt] = useState({ name: '', content: '' });
   const [editablePrompt, setEditablePrompt] = useState({ name: '', content: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [currentPromptId, setCurrentPromptId] = useState(null);
@@ -46,7 +45,6 @@ export const ToolBar = ({ setSystemPrompt }) => {
   const editPrompt = (prompt) => {
     setIsEditing(true);
     setEditablePrompt(prompt);
-    setNewPrompt(prompt);
   };
 
   const deletePrompt = (id) => {
@@ -70,8 +68,7 @@ export const ToolBar = ({ setSystemPrompt }) => {
   };
 
   return (
-    <div className="flex flex-col w-1/6 p-4 border-r">
-      <h2>Tool Bar</h2>
+    <div>
       <div className="mt-2 max-h-48 overflow-y-auto">
         {prompts.map((prompt) => (
           <div key={prompt.id} className="mb-2 flex justify-between items-center">
@@ -129,4 +126,4 @@ export const ToolBar = ({ setSystemPrompt }) => {
 
 };
 
-export default ToolBar;
+export default SystemPromptManager;
