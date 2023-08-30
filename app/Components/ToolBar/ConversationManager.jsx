@@ -42,31 +42,49 @@ const ConversationManager = ({ setCurrentConversationId }) => {
   };
 
   return (
-    <div>
-      <h3>Conversations</h3>
-      <ul>
+    <div className="bg-gray-50 p-2 rounded-lg">
+      <h3 className="text-xl font-bold mb-2">Conversations</h3>
+      <ul className="space-y-1">
         {conversations.map((conversation) => (
-          <li key={conversation.id}>
-            {conversation.name}
-            <button onClick={() => deleteConversation(conversation.id)}>Delete</button>
-            <button
-              className={`text-green-500 hover:text-green-700 ${localCurrentConversationId === conversation.id ? 'text-green-900' : ''}`}
-              onClick={() => selectConversation(conversation.id)}
-            >
-              Select
-            </button>
+          <li 
+            key={conversation.id} 
+            className={`p-2 rounded ${localCurrentConversationId === conversation.id ? 'bg-green-100' : 'bg-white'} shadow-sm`}
+          >
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium">{conversation.name}</span>
+              <div className="flex space-x-1">
+                <button 
+                  onClick={() => deleteConversation(conversation.id)} 
+                  className="text-white bg-red-500 p-1 rounded hover:bg-red-600 text-xs"
+                >
+                  Del
+                </button>
+                <button
+                  onClick={() => selectConversation(conversation.id)}
+                  className={`text-white p-1 rounded ${localCurrentConversationId === conversation.id ? 'bg-green-700' : 'bg-green-500'} hover:bg-green-600 text-xs`}
+                >
+                  Sel
+                </button>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
-      <input 
-        type="text" 
-        placeholder="New Conversation Name"
-        value={newConversationName}
-        onChange={(e) => setNewConversationName(e.target.value)}
-      />
-      <button onClick={createConversation}>Create</button>
+      <div className="mt-2 flex items-center space-x-1">
+        <input 
+          type="text" 
+          placeholder="New Conv." 
+          value={newConversationName} 
+          onChange={(e) => setNewConversationName(e.target.value)}
+          className="p-1 w-full border rounded text-sm"
+        />
+        <button onClick={createConversation} className="bg-blue-500 text-white p-1 rounded hover:bg-blue-600 text-xs">
+          Cr
+        </button>
+      </div>
     </div>
   );
-};
+
+}
 
 export default ConversationManager;
