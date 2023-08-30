@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ConversationManager = ({ setCurrentConversationId }) => {
+const ConversationManager = ({ setCurrentConversationId, setMessages }) => {
   const [conversations, setConversations] = useState([]);
   const [newConversationName, setNewConversationName] = useState('');
   const [localCurrentConversationId, setLocalCurrentConversationId] = useState(null);
@@ -32,6 +32,7 @@ const ConversationManager = ({ setCurrentConversationId }) => {
       method: 'DELETE',
     })
     .then(() => {
+      setMessages([]);
       setConversations(conversations.filter((conversation) => conversation.id !== id));
     });
   };

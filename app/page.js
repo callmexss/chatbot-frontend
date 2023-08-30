@@ -63,6 +63,7 @@ export default function Home() {
       <ToolBar
         systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} 
         currentConversationId={currentConversationId} setCurrentConversationId={setCurrentConversationId}
+        setMessages={setMessages}
       />
       <div className="flex flex-col w-4/6 h-full items-center justify-between">
         <ChatBox messages={messages} />
