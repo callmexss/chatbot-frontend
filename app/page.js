@@ -11,9 +11,17 @@ export default function Home() {
   const [systemPrompt, setSystemPrompt] = useState('');
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [isConversationSelected, setIsConversationSelected] = useState(false);
+  const [conversations, setConversations] = useState([]);
+
 
   const handleConversationSelected = () => {
     setIsConversationSelected(true);
+  };
+
+  const fetchConversations = async () => {
+    const response = await fetch('http://localhost:8000/chat/conversations/');
+    const data = await response.json();
+    setConversations(data);
   };
 
   const handleKeyDown = (e) => {
@@ -50,6 +58,7 @@ export default function Home() {
       const initialChunk = new TextDecoder().decode(value);
       const [conversationId, remaining] = initialChunk.split('|||', 2);
       setCurrentConversationId(conversationId);
+      fetchConversations();
       botReply += remaining;
     }
 
@@ -79,6 +88,8 @@ export default function Home() {
         currentConversationId={currentConversationId} setCurrentConversationId={setCurrentConversationId}
         setMessages={setMessages}
         handleConversationSelected={handleConversationSelected}
+        conversations={conversations}
+        setConversations={setConversations}
       />
       <div className="flex flex-col w-4/6 h-full items-center justify-between">
         <ChatBox messages={messages} />

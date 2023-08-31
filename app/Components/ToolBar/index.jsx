@@ -5,7 +5,9 @@ export const ToolBar = ({
   setSystemPrompt,
   setCurrentConversationId,
   setMessages,
-  handleConversationSelected
+  handleConversationSelected,
+  conversations,
+  setConversations,
 }) => {
   return (
     <div className="flex flex-col w-1/6 p-4 border-r">
@@ -15,6 +17,8 @@ export const ToolBar = ({
         setCurrentConversationId={setCurrentConversationId} 
         setMessages={setMessages} 
         handleConversationSelected={handleConversationSelected}
+        conversations={conversations}
+        setConversations={setConversations}
       />
     </div>
   );

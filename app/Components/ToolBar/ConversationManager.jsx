@@ -3,9 +3,11 @@ import React, { useState, useEffect } from 'react';
 const ConversationManager = ({ 
     setCurrentConversationId,
     setMessages,
-    handleConversationSelected
+    handleConversationSelected,
+    conversations,
+    setConversations,
 }) => {
-  const [conversations, setConversations] = useState([]);
+
   const [newConversationName, setNewConversationName] = useState('');
   const [localCurrentConversationId, setLocalCurrentConversationId] = useState(null);
 
