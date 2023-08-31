@@ -45,6 +45,14 @@ export default function Home() {
 
     let botReply = '';
     const reader = response.body.getReader();
+    const { done, value } = await reader.read();
+    if (!done) {
+      const initialChunk = new TextDecoder().decode(value);
+      const [conversationId, remaining] = initialChunk.split('|||', 2);
+      setCurrentConversationId(conversationId);
+      botReply += remaining;
+    }
+
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
@@ -53,6 +61,7 @@ export default function Home() {
       setMessages([...messages, { content: input, message_type: 'user' }, { content: botReply, message_type: 'bot' }]);
     }
   };
+
 
   useEffect(() => {
     if (currentConversationId) {
