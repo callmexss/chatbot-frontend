@@ -1,5 +1,5 @@
 import ReactMarkdown from 'react-markdown';
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
