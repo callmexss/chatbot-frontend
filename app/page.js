@@ -10,13 +10,7 @@ export default function Home() {
   const [messages, setMessages] = useState([]);
   const [systemPrompt, setSystemPrompt] = useState('');
   const [currentConversationId, setCurrentConversationId] = useState(null);
-  const [isConversationSelected, setIsConversationSelected] = useState(false);
   const [conversations, setConversations] = useState([]);
-
-
-  const handleConversationSelected = () => {
-    setIsConversationSelected(true);
-  };
 
   const fetchConversations = async () => {
     const response = await fetch('http://localhost:8000/chat/conversations/');
@@ -34,6 +28,7 @@ export default function Home() {
       }
     }
   };
+
 
   const sendMessage = async () => {
     setMessages([...messages, { content: input, message_type: 'user' }]);
@@ -57,8 +52,10 @@ export default function Home() {
     if (!done) {
       const initialChunk = new TextDecoder().decode(value);
       const [conversationId, remaining] = initialChunk.split('|||', 2);
-      setCurrentConversationId(conversationId);
-      fetchConversations();
+      fetchConversations().then(() => {
+        console.log("set conversation id: " + conversationId);
+        setCurrentConversationId(conversationId);
+      });
       botReply += remaining;
     }
 
@@ -87,7 +84,6 @@ export default function Home() {
         systemPrompt={systemPrompt} setSystemPrompt={setSystemPrompt} 
         currentConversationId={currentConversationId} setCurrentConversationId={setCurrentConversationId}
         setMessages={setMessages}
-        handleConversationSelected={handleConversationSelected}
         conversations={conversations}
         setConversations={setConversations}
       />
@@ -95,7 +91,6 @@ export default function Home() {
         <ChatBox messages={messages} />
         <InputBox
           input={input} setInput={setInput} sendMessage={sendMessage} handleKeyDown={handleKeyDown}
-          disabled={!isConversationSelected} 
         />
       </div>
       <div className="w-1/6"></div>

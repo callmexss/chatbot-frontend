@@ -3,9 +3,9 @@ import ConversationManager from './ConversationManager';
 
 export const ToolBar = ({
   setSystemPrompt,
+  currentConversationId,
   setCurrentConversationId,
   setMessages,
-  handleConversationSelected,
   conversations,
   setConversations,
 }) => {
@@ -15,8 +15,8 @@ export const ToolBar = ({
       <SystemPromptManager setSystemPrompt={setSystemPrompt} />
       <ConversationManager 
         setCurrentConversationId={setCurrentConversationId} 
+        currentConversationId={currentConversationId}
         setMessages={setMessages} 
-        handleConversationSelected={handleConversationSelected}
         conversations={conversations}
         setConversations={setConversations}
       />

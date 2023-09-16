@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 const ConversationManager = ({ 
     setCurrentConversationId,
+    currentConversationId,
     setMessages,
-    handleConversationSelected,
     conversations,
     setConversations,
 }) => {
@@ -18,20 +18,29 @@ const ConversationManager = ({
       .then((data) => setConversations(data));
   }, []);
 
-  const createConversation = () => {
-    fetch('http://localhost:8000/chat/conversations/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: newConversationName }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setConversations([...conversations, data]);
+  useEffect(() => {
+    if (Number(currentConversationId) !== Number(localCurrentConversationId)) {
+      selectConversation(Number(currentConversationId));
+    }
+  }, [currentConversationId]);
+
+  const createConversation = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/chat/conversations/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: newConversationName }),
+      });
+      const data = await response.json();
+      setConversations(prevConversations => [...prevConversations, data]);
       setNewConversationName('');
-    });
-    handleConversationSelected();
+      setLocalCurrentConversationId(data.id);
+      setCurrentConversationId(data.id);
+    } catch (error) {
+      console.error("There was an error creating the conversation:", error);
+    }
   };
 
   const deleteConversation = (id) => {
@@ -52,10 +61,9 @@ const ConversationManager = ({
   };
 
   const selectConversation = (id) => {
-    setLocalCurrentConversationId(id);
-    setCurrentConversationId(id);
-    handleConversationSelected();
-  };
+      setLocalCurrentConversationId(id);
+      setCurrentConversationId(id);
+    }
 
   return (
     <div className="bg-gray-50 p-2 rounded-lg custom-scrollbar" style={{ maxHeight: 'calc(100vh - SOME_OFFSET)', overflowY: 'auto' }}>
