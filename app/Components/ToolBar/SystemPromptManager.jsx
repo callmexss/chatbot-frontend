@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export const SystemPromptManager = ({ setSystemPrompt }) => {
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [prompts, setPrompts] = useState([]);
   const [editablePrompt, setEditablePrompt] = useState({ name: '', content: '' });
   const [isEditing, setIsEditing] = useState(false);
@@ -8,8 +9,8 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
 
   const addOrUpdatePrompt = () => {
     const apiUrl = editablePrompt.id
-      ? `http://localhost:8000/chat/system-prompts/${editablePrompt.id}/`
-      : 'http://localhost:8000/chat/system-prompts/';
+      ? `${API_BASE_URL}/api/v1/chat/system-prompts/${editablePrompt.id}/`
+      : `${API_BASE_URL}/api/v1/chat/system-prompts/`;
 
     const method = editablePrompt.id ? 'PUT' : 'POST';
 
@@ -37,7 +38,7 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
 
   useEffect(() => {
     // Fetch the system prompts from the backend
-    fetch('http://localhost:8000/chat/system-prompts/')
+    fetch(`${API_BASE_URL}/api/v1/chat/system-prompts/`)
       .then((response) => response.json())
       .then((data) => setPrompts(data));
   }, []);
@@ -48,7 +49,7 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
   };
 
   const deletePrompt = (id) => {
-    fetch(`http://localhost:8000/chat/system-prompts/${id}/`, {
+    fetch(`${API_BASE_URL}/api/v1/chat/system-prompts/${id}/`, {
       method: 'DELETE',
     }).then(() => {
       setPrompts(prompts.filter((prompt) => prompt.id !== id));

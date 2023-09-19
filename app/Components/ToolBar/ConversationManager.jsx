@@ -8,12 +8,13 @@ const ConversationManager = ({
     setConversations,
 }) => {
 
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [newConversationName, setNewConversationName] = useState('');
   const [localCurrentConversationId, setLocalCurrentConversationId] = useState(null);
 
   useEffect(() => {
     // Fetch existing conversations from the backend
-    fetch('http://localhost:8000/chat/conversations/')
+    fetch(`${API_BASE_URL}/api/v1/chat/conversations/`)
       .then((response) => response.json())
       .then((data) => setConversations(data));
   }, []);
@@ -26,7 +27,7 @@ const ConversationManager = ({
 
   const createConversation = async () => {
     try {
-      const response = await fetch('http://localhost:8000/chat/conversations/', {
+      const response = await fetch(`${API_BASE_URL}/api/v1/chat/conversations/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ const ConversationManager = ({
   };
 
   const deleteConversation = (id) => {
-      fetch(`http://localhost:8000/chat/conversations/${id}/`, {
+      fetch(`${API_BASE_URL}/api/v1/chat/conversations/${id}/`, {
         method: 'DELETE',
       })
       .then(() => {
