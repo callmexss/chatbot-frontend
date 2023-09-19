@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ConversationService from '../../services/ConversationService'; // Update the path to where your ConversationService is located
 
 const ConversationManager = ({ 
     setCurrentConversationId,
@@ -8,15 +9,14 @@ const ConversationManager = ({
     setConversations,
 }) => {
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [newConversationName, setNewConversationName] = useState('');
   const [localCurrentConversationId, setLocalCurrentConversationId] = useState(null);
 
   useEffect(() => {
     // Fetch existing conversations from the backend
-    fetch(`${API_BASE_URL}/api/v1/chat/conversations/`)
-      .then((response) => response.json())
-      .then((data) => setConversations(data));
+    ConversationService.fetchConversations()
+      .then((data) => setConversations(data))
+      .catch((error) => console.error('An error occurred while fetching conversations:', error));
   }, []);
 
   useEffect(() => {
@@ -27,14 +27,7 @@ const ConversationManager = ({
 
   const createConversation = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1/chat/conversations/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name: newConversationName }),
-      });
-      const data = await response.json();
+      const data = await ConversationService.createConversation(newConversationName);
       setConversations(prevConversations => [...prevConversations, data]);
       setNewConversationName('');
       setLocalCurrentConversationId(data.id);
@@ -44,27 +37,24 @@ const ConversationManager = ({
     }
   };
 
-  const deleteConversation = (id) => {
-      fetch(`${API_BASE_URL}/api/v1/chat/conversations/${id}/`, {
-        method: 'DELETE',
-      })
-      .then(() => {
-        if (id === localCurrentConversationId) {
-          setMessages([]);
-          setCurrentConversationId(null);
-          setLocalCurrentConversationId(null);
-        }
-        setConversations((prevConversations) => prevConversations.filter((conversation) => conversation.id !== id));
-      })
-      .catch((error) => {
-        console.error("There was an error deleting the conversation:", error);
-      });
+  const deleteConversation = async (id) => {
+    try {
+      await ConversationService.deleteConversation(id);
+      if (id === localCurrentConversationId) {
+        setMessages([]);
+        setCurrentConversationId(null);
+        setLocalCurrentConversationId(null);
+      }
+      setConversations((prevConversations) => prevConversations.filter((conversation) => conversation.id !== id));
+    } catch (error) {
+      console.error("There was an error deleting the conversation:", error);
+    }
   };
 
   const selectConversation = (id) => {
       setLocalCurrentConversationId(id);
       setCurrentConversationId(id);
-    }
+  };
 
   return (
     <div className="bg-gray-50 p-2 rounded-lg custom-scrollbar" style={{ maxHeight: 'calc(100vh - SOME_OFFSET)', overflowY: 'auto' }}>

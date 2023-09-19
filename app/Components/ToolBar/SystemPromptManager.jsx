@@ -1,28 +1,15 @@
+import SystemPromptService from '../../services/SystemPromptService';
 import { useState, useEffect } from 'react';
 
 export const SystemPromptManager = ({ setSystemPrompt }) => {
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [prompts, setPrompts] = useState([]);
   const [editablePrompt, setEditablePrompt] = useState({ name: '', content: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [currentPromptId, setCurrentPromptId] = useState(null);
 
-  const addOrUpdatePrompt = () => {
-    const apiUrl = editablePrompt.id
-      ? `${API_BASE_URL}/api/v1/chat/system-prompts/${editablePrompt.id}/`
-      : `${API_BASE_URL}/api/v1/chat/system-prompts/`;
-
-    const method = editablePrompt.id ? 'PUT' : 'POST';
-
-    fetch(apiUrl, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(editablePrompt),
-    })
-    .then((response) => response.json())
-    .then((data) => {
+  const addOrUpdatePrompt = async () => {
+    try {
+      const data = await SystemPromptService.addOrUpdateSystemPrompt(editablePrompt);
       if (editablePrompt.id) {
         // Update the existing prompt in the UI
         setPrompts(prompts.map((p) => (p.id === editablePrompt.id ? data : p)));
@@ -33,14 +20,21 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
       // Reset the editable prompt
       setEditablePrompt({ name: '', content: '' });
       setIsEditing(false);
-    });
+    } catch (error) {
+      console.error('An error occurred while adding or updating the system prompt.', error);
+    }
   };
 
   useEffect(() => {
-    // Fetch the system prompts from the backend
-    fetch(`${API_BASE_URL}/api/v1/chat/system-prompts/`)
-      .then((response) => response.json())
-      .then((data) => setPrompts(data));
+    const fetchPrompts = async () => {
+      try {
+        const data = await SystemPromptService.fetchSystemPrompts();
+        setPrompts(data);
+      } catch (error) {
+        console.error('An error occurred while fetching system prompts.', error);
+      }
+    };
+    fetchPrompts();
   }, []);
 
   const editPrompt = (prompt) => {
@@ -48,12 +42,13 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
     setEditablePrompt(prompt);
   };
 
-  const deletePrompt = (id) => {
-    fetch(`${API_BASE_URL}/api/v1/chat/system-prompts/${id}/`, {
-      method: 'DELETE',
-    }).then(() => {
+  const deletePrompt = async (id) => {
+    try {
+      await SystemPromptService.deleteSystemPrompt(id);
       setPrompts(prompts.filter((prompt) => prompt.id !== id));
-    });
+    } catch (error) {
+      console.error('An error occurred while deleting the system prompt.', error);
+    }
   };
 
   const usePrompt = (id, content) => {
