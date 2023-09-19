@@ -74,7 +74,7 @@ class ConversationService extends BaseApiService {
     );
 
     if (response.ok) {
-      return response.body.getReader();
+      return response;
     } else {
       throw new Error('An error occurred while sending the message.');
     }

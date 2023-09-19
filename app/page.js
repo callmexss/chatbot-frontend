@@ -34,41 +34,42 @@ export default function Home() {
   };
 
   const sendMessage = async () => {
-    setMessages((prevMessages) => [...prevMessages, { content: input, message_type: "user" }]);
+    setMessages([...messages, { content: input, message_type: "user" }]);
     setInput("");
 
-    try {
-      const reader = await ConversationService.sendMessageWithStream(input, systemPrompt, currentConversationId);
-      let botReply = "";
-      
-      const { done, value } = await reader.read();
-      if (!done) {
-        const initialChunk = new TextDecoder().decode(value);
-        const [conversationId, remaining] = initialChunk.split("|||", 2);
-        fetchConversations().then(() => {
-          setCurrentConversationId(conversationId);
-        });
-        botReply += remaining;
-      }
+    const response = await ConversationService.sendMessageWithStream(
+      input,
+      systemPrompt,
+      currentConversationId
+    );
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          break;
-        }
-        const chunk = new TextDecoder().decode(value);
-        botReply += chunk;
+    let botReply = "";
+    const reader = response.body.getReader();
+    const { done, value } = await reader.read();
+    if (!done) {
+      const initialChunk = new TextDecoder().decode(value);
+      const [conversationId, remaining] = initialChunk.split("|||", 2);
+      ConversationService.fetchConversations().then(() => {
+        console.log("set conversation id: " + conversationId);
+        setCurrentConversationId(conversationId);
+      });
+      botReply += remaining;
+    }
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        break;
       }
-      
-      setMessages((prevMessages) => [
-        ...prevMessages,
+      const chunk = new TextDecoder().decode(value);
+      botReply += chunk;
+      setMessages([
+        ...messages,
+        { content: input, message_type: "user" },
         { content: botReply, message_type: "bot" },
       ]);
-
-    } catch (error) {
-      console.error('An error occurred while sending the message:', error);
     }
-  };
+  }; 
 
   useEffect(() => {
     const fetchMessages = async () => {
