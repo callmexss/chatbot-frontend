@@ -2,11 +2,9 @@ import BaseApiService from './BaseApiService';
 
 class ConversationService extends BaseApiService {
   static async fetchConversations() {
-    const refreshToken = localStorage.getItem('refreshToken');
     const response = await this.fetchDataWithAuth(
       `${this.API_BASE_URL}/api/v1/chat/conversations/`,
       { method: 'GET' },
-      refreshToken
     );
 
     if (response.ok) {
@@ -17,7 +15,6 @@ class ConversationService extends BaseApiService {
   }
 
   static async createConversation(name) {
-    const refreshToken = localStorage.getItem('refreshToken');
     const response = await this.fetchDataWithAuth(
       `${this.API_BASE_URL}/api/v1/chat/conversations/`,
       {
@@ -27,7 +24,6 @@ class ConversationService extends BaseApiService {
         },
         body: JSON.stringify({ name }),
       },
-      refreshToken
     );
 
     if (response.ok) {
@@ -38,11 +34,9 @@ class ConversationService extends BaseApiService {
   }
 
   static async deleteConversation(id) {
-    const refreshToken = localStorage.getItem('refreshToken');
     const response = await this.fetchDataWithAuth(
       `${this.API_BASE_URL}/api/v1/chat/conversations/${id}/`,
       { method: 'DELETE' },
-      refreshToken
     );
 
     if (!response.ok) {
@@ -51,11 +45,9 @@ class ConversationService extends BaseApiService {
   }
 
     static async fetchMessagesForConversation(conversationId) {
-    const refreshToken = localStorage.getItem('refreshToken');
     const response = await this.fetchDataWithAuth(
         `${this.API_BASE_URL}/api/v1/chat/conversations/${conversationId}/messages/`,
         { method: 'GET' },
-        refreshToken
     );
 
     if (response.ok) {
@@ -66,7 +58,6 @@ class ConversationService extends BaseApiService {
     }
 
   static async sendMessageWithStream(content, systemPrompt, conversationId) {
-    const refreshToken = localStorage.getItem('refreshToken');
     const response = await this.fetchDataWithAuth(
       `${this.API_BASE_URL}/api/v1/chat/openai/`,
       {
@@ -80,7 +71,6 @@ class ConversationService extends BaseApiService {
           conversation_id: conversationId,
         }),
       },
-      refreshToken
     );
 
     if (response.ok) {

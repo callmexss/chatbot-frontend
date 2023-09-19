@@ -2,11 +2,9 @@ import BaseApiService from './BaseApiService';
 
 class SystemPromptService extends BaseApiService {
   static async fetchSystemPrompts() {
-    const refreshToken = localStorage.getItem('refreshToken');
     const response = await this.fetchDataWithAuth(
       `${this.API_BASE_URL}/api/v1/chat/system-prompts/`,
       { method: 'GET' },
-      refreshToken
     );
 
     if (response.ok) {
@@ -17,7 +15,6 @@ class SystemPromptService extends BaseApiService {
   }
 
   static async addOrUpdateSystemPrompt(prompt) {
-    const refreshToken = localStorage.getItem('refreshToken');
     const apiUrl = prompt.id
       ? `${this.API_BASE_URL}/api/v1/chat/system-prompts/${prompt.id}/`
       : `${this.API_BASE_URL}/api/v1/chat/system-prompts/`;
@@ -30,7 +27,6 @@ class SystemPromptService extends BaseApiService {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prompt),
       },
-      refreshToken
     );
 
     if (response.ok) {
@@ -41,7 +37,6 @@ class SystemPromptService extends BaseApiService {
   }
 
   static async deleteSystemPrompt(id) {
-    const refreshToken = localStorage.getItem('refreshToken');
     const apiUrl = `${this.API_BASE_URL}/api/v1/chat/system-prompts/${id}/`;
 
     const response = await this.fetchDataWithAuth(
@@ -49,7 +44,6 @@ class SystemPromptService extends BaseApiService {
       {
         method: 'DELETE',
       },
-      refreshToken
     );
 
     if (!response.ok) {

@@ -3,7 +3,7 @@
 class BaseApiService {
   static API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-  static async fetchDataWithAuth(url, options, refreshToken) {
+  static async fetchDataWithAuth(url, options) {
     let accessToken = localStorage.getItem('access_token');
     options.headers = {
       ...options.headers,
@@ -22,7 +22,8 @@ class BaseApiService {
     return response;
   }
 
-  static async refreshAccessToken(refreshToken) {
+  static async refreshAccessToken() {
+    const refreshToken = localStorage.getItem("refresh_token");
     const response = await fetch(`${this.API_BASE_URL}/api/v1/token/refresh/`, {
       method: "POST",
       headers: {
