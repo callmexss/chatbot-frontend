@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
@@ -32,9 +33,9 @@ export const ChatBox = ({ messages }) => (
   <div className="w-full flex-1 overflow-y-auto p-4 custom-scrollbar">
     {messages.map((message, index) => (
       <div key={index} className={`mb-4 ${message.message_type === 'user' ? 'flex justify-end' : 'flex justify-start'}`}>
-        <div className={message.message_type === 'user' ? 'bg-blue-300 text-white p-2 rounded-lg shadow-lg inline-block' : 'bg-gray-300 p-2 rounded-lg shadow-lg inline-block'}>
+        <div className={message.message_type === 'user' ? 'bg-blue-300 text-white p-2 rounded-lg shadow-lg inline-block' : 'chatbot bg-gray-300 p-2 rounded-lg shadow-lg inline-block'}>
           {message.message_type === 'bot' ? (
-            <ReactMarkdown components={{ code: CodeBlock }}>
+            <ReactMarkdown components={{ code: CodeBlock }} remarkPlugins={[remarkGfm]}>
               {message.content}
             </ReactMarkdown>
           ) : (

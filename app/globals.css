@@ -70,32 +70,60 @@ body {
   max-width: 80;
 }
 
-.bg-gray-300 h1 {
+.chatbot h1 {
   font-size: 2em;
 }
-.bg-gray-300 h2 {
+.chatbot h2 {
   font-size: 1.5em;
 }
-.bg-gray-300 h3 {
+.chatbot h3 {
   font-size: 1.3em;
 }
-.bg-gray-300 h4 {
+.chatbot h4 {
   font-size: 1.2em;
 }
-.bg-gray-300 h5 {
+.chatbot h5 {
   font-size: 1.1em;
 }
-.bg-gray-300 h6 {
+.chatbot h6 {
   font-size: 1em;
 }
 
-.bg-gray-300 ul {
+.chatbot ul {
   list-style-type: disc;
-  list-style-position: inside;
-  padding-left: 40px;
 }
-.bg-gray-300 ol {
+.chatbot ol {
   list-style-type: decimal;
+}
+
+.chatbot ul, .chatbot ol {
+  padding-left: 1em;
   list-style-position: inside;
-  padding-left: 40px;
+}
+
+.chatbot li {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.chatbot li p {
+  display: inline; 
+}
+
+.chatbot table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.chatbot th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  background-color: #f2f2f2;
+}
+
+.chatbot td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
 }
