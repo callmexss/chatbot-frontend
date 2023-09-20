@@ -41,7 +41,6 @@ export default function Home() {
       const initialChunk = new TextDecoder().decode(value);
       const [conversationId, remaining] = initialChunk.split("|||", 2);
       ConversationService.fetchConversations().then((newConversations) => {
-        console.log("set conversation id: " + conversationId);
         setCurrentConversationId(conversationId);
         setConversations(newConversations);
       });

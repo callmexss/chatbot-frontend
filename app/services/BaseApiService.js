@@ -15,7 +15,6 @@ class BaseApiService {
       const refreshToken = localStorage.getItem('refresh_token');
       accessToken = await this.refreshAccessToken(refreshToken);
       localStorage.setItem('access_token', accessToken);
-      console.log("new token: " + accessToken);
       options.headers['Authorization'] = `Bearer ${accessToken}`;
       response = await fetch(url, options);
     }
