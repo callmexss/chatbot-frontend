@@ -13,15 +13,6 @@ export default function Home() {
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
 
-  const fetchConversations = async () => {
-    try {
-      const data = await ConversationService.fetchConversations();
-      setConversations(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       if (e.shiftKey) {
@@ -49,9 +40,10 @@ export default function Home() {
     if (!done) {
       const initialChunk = new TextDecoder().decode(value);
       const [conversationId, remaining] = initialChunk.split("|||", 2);
-      ConversationService.fetchConversations().then(() => {
+      ConversationService.fetchConversations().then((newConversations) => {
         console.log("set conversation id: " + conversationId);
         setCurrentConversationId(conversationId);
+        setConversations(newConversations);
       });
       botReply += remaining;
     }
