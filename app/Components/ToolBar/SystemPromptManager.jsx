@@ -65,6 +65,7 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
 
   return (
     <div className="bg-gray-50 p-2 rounded-lg">
+      <h3 className="text-xl font-bold mb-2">System Prompts</h3>
       {/* System Prompt Editing Area */}
       <div className="mb-4 p-2 rounded-lg bg-white shadow">
         <input 

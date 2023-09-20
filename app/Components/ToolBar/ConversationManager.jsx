@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ConversationService from '../../services/ConversationService'; // Update the path to where your ConversationService is located
+import ConversationService from '../../services/ConversationService';
 
 const ConversationManager = ({ 
     setCurrentConversationId,
