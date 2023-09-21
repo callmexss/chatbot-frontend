@@ -71,7 +71,7 @@ export const SystemPromptManager = ({ setSystemPrompt }) => {
         <input 
           type="text" 
           placeholder="Prompt Name" 
-          className="w-full p-2 border rounded mb-1 text-sm"
+          className="w-full p-2 border rounded mb-1 text-sm custom-scrollbar"
           value={editablePrompt.name}
           onChange={(e) => setEditablePrompt({ ...editablePrompt, name: e.target.value })}
         />
