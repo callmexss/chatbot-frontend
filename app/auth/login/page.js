@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // 引入Next.js的useRouter Hook
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -12,7 +12,7 @@ const Login = () => {
   const router = useRouter(); // 初始化Next.js的useRouter Hook
 
   const handleSubmit = async () => {
-    const response = await fetch(`${API_BASE_URL}/api/v1/token/`, { // 注意这里的URL可能需要和你的后端设置匹配
+    const response = await fetch(`${API_BASE_URL}/api/v1/token/`, { 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,35 +23,54 @@ const Login = () => {
     const data = await response.json();
 
     if (response.ok) {
-      // 存储认证信息（JWT令牌）
       localStorage.setItem('access_token', data.access);
       localStorage.setItem('refresh_token', data.refresh);
-      
-      // 导航到主页或其他页面
-      router.push('/'); // 假设'/home'是你的主页路由
+      router.push('/');
     } else {
-      // 显示错误信息
       setErrorMessage(data.detail || 'An error occurred');
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Submit</button>
-      {errorMessage && <p>{errorMessage}</p>} {/* 显示错误信息 */}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
+      <div className="p-8 bg-white rounded-lg shadow-md w-96">
+        <h1 className="text-2xl font-semibold mb-4">Login</h1>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold mb-2" htmlFor="username">
+            Username
+          </label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold mb-2" htmlFor="password">
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-3 py-2 border rounded-md"
+          />
+        </div>
+        <button
+          onClick={handleSubmit}
+          className="w-full p-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
+        >
+          Submit
+        </button>
+        {errorMessage && (
+          <p className="mt-4 text-red-500">{errorMessage}</p>
+        )}
+      </div>
     </div>
   );
 };
