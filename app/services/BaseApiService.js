@@ -11,7 +11,7 @@ class BaseApiService {
     };
     
     let response = await fetch(url, options);
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 403) {
       const refreshToken = localStorage.getItem('refresh_token');
       accessToken = await this.refreshAccessToken(refreshToken);
       localStorage.setItem('access_token', accessToken);
