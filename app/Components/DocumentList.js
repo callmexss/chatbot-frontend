@@ -7,7 +7,7 @@ const DocumentList = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
   const dispatch = useDispatch();
   const [selectedDocumentIds, setSelectedDocumentIds] = useState([]);
 
