@@ -15,7 +15,8 @@ export default function DocChat() {
   const [systemPrompt, setSystemPrompt] = useState("");
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
-  const selectedDocumentId = useSelector((state) => state.document.selectedDocumentId);
+  const selectedDocumentIds = useSelector((state) => state.document.selectedDocumentIds);
+
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {

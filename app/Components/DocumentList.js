@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedDocument, clearSelectedDocument } from '../redux/actions/documentActions';
 import DocumentService from "../services/DocumentService";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedDocuments } from '../redux/actions/documentActions';
 
 const DocumentList = () => {
   const [documents, setDocuments] = useState([]);
@@ -10,8 +9,7 @@ const DocumentList = () => {
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
-  const selectedDocumentId = useSelector((state) => state.document.selectedDocumentId);
-
+  const [selectedDocumentIds, setSelectedDocumentIds] = useState([]);
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -29,11 +27,14 @@ const DocumentList = () => {
   }, []);
 
   const handleDocumentClick = (id) => {
-    if (selectedDocumentId === id) {
-      dispatch(clearSelectedDocument());
+    let newSelectedDocumentIds;
+    if (selectedDocumentIds.includes(id)) {
+      newSelectedDocumentIds = selectedDocumentIds.filter((docId) => docId !== id);
     } else {
-      dispatch(setSelectedDocument(id));
+      newSelectedDocumentIds = [...selectedDocumentIds, id];
     }
+    setSelectedDocumentIds(newSelectedDocumentIds);
+    dispatch(setSelectedDocuments(newSelectedDocumentIds)); // 这一行将更新 Redux 的状态
   };
 
   if (loading) {
@@ -58,7 +59,7 @@ const DocumentList = () => {
             {documents.map((document) => (
               <li 
                 key={document.id} 
-                className={`py-4 ${selectedDocumentId === document.id ? 'bg-blue-100' : ''}`}
+                className={`py-4 ${selectedDocumentIds.includes(document.id) ? 'bg-blue-100' : ''}`}
                 onClick={() => handleDocumentClick(document.id)}
               >
                 {document.filename}

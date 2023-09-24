@@ -1,12 +1,8 @@
-export const setSelectedDocument = (documentId) => {
-  return {
-    type: 'SET_SELECTED_DOCUMENT',
-    payload: documentId,
-  };
-};
+// documentActions.js
 
-export const clearSelectedDocument = () => {
-  return {
-    type: 'CLEAR_SELECTED_DOCUMENT',
-  };
-};
+export const SET_SELECTED_DOCUMENTS = 'SET_SELECTED_DOCUMENTS';
+
+export const setSelectedDocuments = (documentIds) => ({
+  type: SET_SELECTED_DOCUMENTS,
+  payload: documentIds
+});

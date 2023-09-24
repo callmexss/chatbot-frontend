@@ -1,13 +1,16 @@
+import { SET_SELECTED_DOCUMENTS } from '../actions/documentActions';
+
 const initialState = {
-  selectedDocumentId: null,
+  selectedDocumentIds: []
 };
 
 const documentReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_SELECTED_DOCUMENT':
-      return { ...state, selectedDocumentId: action.payload };
-    case 'CLEAR_SELECTED_DOCUMENT':
-      return { ...state, selectedDocumentId: null };
+    case SET_SELECTED_DOCUMENTS:
+      return {
+        ...state,
+        selectedDocumentIds: action.payload
+      };
     default:
       return state;
   }
