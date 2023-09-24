@@ -5,6 +5,7 @@ import ToolBar from "../Components/ToolBar";
 import ChatBox from "../Components/ChatBox";
 import InputBox from "../Components/InputBox";
 import Header from "../Components/Header";
+import DocumentList from "../Components/DocumentList";
 import ConversationService from "../services/ConversationService";
 
 export default function Home() {
@@ -102,7 +103,9 @@ export default function Home() {
             handleKeyDown={handleKeyDown}
           />
         </div>
-        <div className="w-1/6"></div>
+        <div className="w-1/6">
+          <DocumentList />
+        </div>
       </div>
     </div>
   ); 
