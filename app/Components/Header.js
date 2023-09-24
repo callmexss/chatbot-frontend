@@ -16,12 +16,15 @@ const Header = () => {
     <header className={styles.header}>
       <div className={styles.logo}>
         <Link href="/">
-          My App
+          ESChat
         </Link>
       </div>
       <nav className={styles.nav}>
         <Link href="/chat">
           Chat
+        </Link>
+        <Link href="/doc-chat">
+          DocChat
         </Link>
         <Link href="/document">
           Document Management
