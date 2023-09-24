@@ -36,7 +36,8 @@ export default function DocChat() {
     const response = await ConversationService.sendMessageWithStream(
       input,
       systemPrompt,
-      currentConversationId
+      currentConversationId,
+      selectedDocumentIds,
     );
 
     let botReply = "";

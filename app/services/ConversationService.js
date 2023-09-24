@@ -57,7 +57,7 @@ class ConversationService extends BaseApiService {
     }
     }
 
-  static async sendMessageWithStream(content, systemPrompt, conversationId) {
+  static async sendMessageWithStream(content, systemPrompt, conversationId, selectedDocumentIds = []) {
     const response = await this.fetchDataWithAuth(
       `${this.API_BASE_URL}/api/v1/chat/openai/`,
       {
@@ -69,6 +69,7 @@ class ConversationService extends BaseApiService {
           content,
           system_prompt: systemPrompt,
           conversation_id: conversationId,
+          document_ids: selectedDocumentIds,
         }),
       },
     );
