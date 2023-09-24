@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { setSelectedDocument, clearSelectedDocument } from '../redux/actions/documentActions';
 import DocumentService from "../services/DocumentService";
+
 
 const DocumentList = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const dispatch = useDispatch();
+  const selectedDocumentId = useSelector((state) => state.document.selectedDocumentId);
+
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -21,6 +27,14 @@ const DocumentList = () => {
 
     fetchDocuments();
   }, []);
+
+  const handleDocumentClick = (id) => {
+    if (selectedDocumentId === id) {
+      dispatch(clearSelectedDocument());
+    } else {
+      dispatch(setSelectedDocument(id));
+    }
+  };
 
   if (loading) {
     return <div className="text-lg font-semibold">Loading...</div>;
@@ -41,16 +55,13 @@ const DocumentList = () => {
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4">User Documents</h1>
           <ul className="divide-y divide-gray-200">
-            {documents.map((document, index) => (
-              <li key={index} className="py-4">
-                <a
-                  href={document.file}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {document.id} - {document.filename}
-                </a>
+            {documents.map((document) => (
+              <li 
+                key={document.id} 
+                className={`py-4 ${selectedDocumentId === document.id ? 'bg-blue-100' : ''}`}
+                onClick={() => handleDocumentClick(document.id)}
+              >
+                {document.filename}
               </li>
             ))}
           </ul>

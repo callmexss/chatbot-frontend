@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import ToolBar from "../Components/ToolBar";
 import ChatBox from "../Components/ChatBox";
 import InputBox from "../Components/InputBox";
@@ -8,12 +9,13 @@ import Header from "../Components/Header";
 import DocumentList from "../Components/DocumentList";
 import ConversationService from "../services/ConversationService";
 
-export default function Home() {
+export default function DocChat() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
   const [systemPrompt, setSystemPrompt] = useState("");
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [conversations, setConversations] = useState([]);
+  const selectedDocumentId = useSelector((state) => state.document.selectedDocumentId);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
