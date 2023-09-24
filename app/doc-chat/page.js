@@ -84,7 +84,7 @@ export default function DocChat() {
   }, [currentConversationId]);
 
   return (
-    <div>
+    <div className="custom-scrollbar">
       <div className="sticky top-0 z-50">
         <Header />
       </div>
@@ -107,7 +107,7 @@ export default function DocChat() {
             handleKeyDown={handleKeyDown}
           />
         </div>
-        <div className="w-1/6">
+        <div className="flex flex-col h-full w-1/6">
           <DocumentList />
         </div>
       </div>

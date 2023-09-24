@@ -127,3 +127,24 @@ body {
   text-align: left;
   padding: 8px;
 }
+
+/* 针对整个页面的滚动条 */
+::-webkit-scrollbar {
+  width: 12px;  /* 垂直滚动条宽度 */
+  height: 12px;  /* 水平滚动条高度 */
+}
+
+/* 滚动条的轨迹 */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* 滚动条的滑块 */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* 滚动条的滑块 - 鼠标悬停 */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

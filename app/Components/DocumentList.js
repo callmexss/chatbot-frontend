@@ -48,14 +48,14 @@ const DocumentList = () => {
   }
 
   return (
-    <div className="document-list">
+    <div className="document-list bg-gray-50 overflow-y-auto custom-scrollbar p-2 rounded-lg">
       <button onClick={() => setIsExpanded(!isExpanded)}>
         {isExpanded ? 'Hide Documents' : 'Show Documents'}
       </button>
       {isExpanded && (
         <div className="container mx-auto p-4">
           <h1 className="text-2xl font-semibold mb-4">User Documents</h1>
-          <ul className="divide-y divide-gray-200">
+          <ul className="divide-y divide-gray-200  h-[calc(100vh - 200px)] ">
             {documents.map((document) => (
               <li 
                 key={document.id} 
