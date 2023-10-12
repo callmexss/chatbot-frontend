@@ -35,7 +35,6 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-200">
       <div className="p-8 bg-white rounded-lg shadow-md w-96">
         <h1 className="text-2xl font-semibold mb-4">Login</h1>
-        <p>${API_BASE_URL}</p>
         <div className="mb-4">
           <label className="block text-sm font-semibold mb-2" htmlFor="username">
             Username
