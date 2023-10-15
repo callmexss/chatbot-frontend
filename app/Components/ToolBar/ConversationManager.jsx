@@ -78,10 +78,10 @@ const ConversationManager = ({
             className={`p-2 rounded ${localCurrentConversationId === conversation.id ? 'bg-green-300' : 'bg-white'} shadow-sm`}
           >
             <div className="flex justify-between items-center">
-              <span className="text-sm font-medium">{conversation.name}</span>
+              <span className="text-sm font-medium truncate">{conversation.name}</span>
               <div className="flex space-x-1">
-                <button 
-                  onClick={() => deleteConversation(conversation.id)} 
+                <button
+                  onClick={() => deleteConversation(conversation.id)}
                   className="text-white bg-red-600 p-1 rounded hover:bg-red-700 text-xs"
                 >
                   Del
