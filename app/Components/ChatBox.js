@@ -37,6 +37,10 @@ export const ChatBox = ({ messages }) => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const handleCopyEntireMessage = (content) => {
+    navigator.clipboard.writeText(content);
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -45,16 +49,18 @@ export const ChatBox = ({ messages }) => {
     <div className="w-full flex-1 overflow-y-auto p-4 custom-scrollbar">
       {messages.map((message, index) => (
         <div key={index} className={`mb-4 ${message.message_type === 'user' ? 'flex justify-end' : 'flex justify-start'}`}>
-          <div className={message.message_type === 'user' ? 'bg-blue-300 text-white p-2 rounded-lg shadow-lg inline-block' : 'chatbot bg-gray-300 p-2 rounded-lg shadow-lg inline-block'}>
-            {message.message_type === 'bot' ? (
-              <ReactMarkdown components={{ code: CodeBlock }} remarkPlugins={[remarkGfm]}>
-                {message.content}
-              </ReactMarkdown>
-            ) : (
-              <pre className="whitespace-pre-wrap">
-                {message.content}
-              </pre>
+          <div className={`relative ${message.message_type === 'user' ? 'bg-blue-300 text-white p-2 rounded-lg shadow-lg inline-block' : 'chatbot bg-gray-300 px-2 py-4 rounded-lg shadow-lg inline-block'}`}>
+            {message.message_type === 'bot' && (
+              <button 
+                onClick={() => handleCopyEntireMessage(message.content)} 
+                className='absolute text-sm 2lg:text-base copy-button'
+              >
+                Copy
+              </button>
             )}
+            <ReactMarkdown components={{ code: CodeBlock }} remarkPlugins={[remarkGfm]}>
+              {message.content}
+            </ReactMarkdown>
           </div>
         </div>
       ))}
