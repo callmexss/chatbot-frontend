@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Header from "../Components/Header";
 import DocumentList from "../Components/DocumentList";
 // import { useRouter } from "next/router";
 
@@ -10,7 +9,6 @@ const Document = () => {
 
   return (
     <>
-      <Header />
       <DocumentList />
     </>
   );

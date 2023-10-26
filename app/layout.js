@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './redux/store'; // 路径可能根据你的项目结构有所不同
-
+import Header from './Components/Header';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +18,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Provider store={store}>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <div className="sticky top-0 z-50">
+            <Header />
+          </div>
+          {children}
+        </body>
       </Provider>
     </html>
   )

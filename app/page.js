@@ -80,30 +80,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="sticky top-0 z-50">
-        <Header />
-      </div>
-      <div className="flex h-screen">
-        <ToolBar
-          systemPrompt={systemPrompt}
-          setSystemPrompt={setSystemPrompt}
-          currentConversationId={currentConversationId}
-          setCurrentConversationId={setCurrentConversationId}
-          setMessages={setMessages}
-          conversations={conversations}
-          setConversations={setConversations}
-        />
-        <div className="flex flex-col w-4/6 h-full items-center justify-between">
-          <ChatBox messages={messages} />
-          <InputBox
-            input={input}
-            setInput={setInput}
-            sendMessage={sendMessage}
-            handleKeyDown={handleKeyDown}
-          />
-        </div>
-        <div className="w-1/6"></div>
-      </div>
+
     </div>
   ); 
 

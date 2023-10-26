@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import ToolBar from "../Components/ToolBar";
 import ChatBox from "../Components/ChatBox";
 import InputBox from "../Components/InputBox";
-import Header from "../Components/Header";
 import ConversationService from "../services/ConversationService";
 
 export default function Home() {
@@ -80,9 +79,6 @@ export default function Home() {
 
   return (
     <div>
-      <div className="sticky top-0 z-50">
-        <Header />
-      </div>
       <div className="flex h-screen">
         <ToolBar
           systemPrompt={systemPrompt}

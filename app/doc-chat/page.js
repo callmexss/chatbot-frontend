@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import ToolBar from "../Components/ToolBar";
 import ChatBox from "../Components/ChatBox";
 import InputBox from "../Components/InputBox";
-import Header from "../Components/Header";
 import DocumentList from "../Components/DocumentList";
 import ConversationService from "../services/ConversationService";
 
@@ -85,9 +84,6 @@ export default function DocChat() {
 
   return (
     <div className="custom-scrollbar">
-      <div className="sticky top-0 z-50">
-        <Header />
-      </div>
       <div className="flex h-screen">
         <ToolBar
           systemPrompt={systemPrompt}
