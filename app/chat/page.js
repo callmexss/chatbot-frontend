@@ -59,10 +59,12 @@ export default function Home() {
       ]);
     }
 
-    ConversationService.fetchConversations().then((newConversations) => {
-      setCurrentConversationId(conversationId);
-      setConversations(newConversations);
-    });
+    if (conversationId !== currentConversationId) {
+        ConversationService.fetchConversations().then((newConversations) => {
+          setCurrentConversationId(conversationId);
+          setConversations(newConversations);
+        });
+    }
   }; 
 
   useEffect(() => {

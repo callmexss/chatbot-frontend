@@ -64,11 +64,13 @@ export default function DocChat() {
       ]);
     }
 
-    ConversationService.fetchConversations().then((newConversations) => {
-      setCurrentConversationId(conversationId);
-      setConversations(newConversations);
-    });
-  }; 
+    if (conversationId !== currentConversationId) {
+        ConversationService.fetchConversations().then((newConversations) => {
+          setCurrentConversationId(conversationId);
+          setConversations(newConversations);
+        });
+    }
+  };
 
   useEffect(() => {
     const fetchMessages = async () => {
